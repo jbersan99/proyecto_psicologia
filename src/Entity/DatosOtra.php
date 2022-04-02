@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DatosOtraRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,16 @@ class DatosOtra
      * @ORM\Column(type="integer")
      */
     private $Edad;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Cita::class, mappedBy="datos_otro_reserva")
+     */
+    private $citas;
+
+    public function __construct()
+    {
+        $this->citas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +98,36 @@ class DatosOtra
     public function setEdad(int $Edad): self
     {
         $this->Edad = $Edad;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cita>
+     */
+    public function getCitas(): Collection
+    {
+        return $this->citas;
+    }
+
+    public function addCita(Cita $cita): self
+    {
+        if (!$this->citas->contains($cita)) {
+            $this->citas[] = $cita;
+            $cita->setDatosOtroReserva($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCita(Cita $cita): self
+    {
+        if ($this->citas->removeElement($cita)) {
+            // set the owning side to null (unless already changed)
+            if ($cita->getDatosOtroReserva() === $this) {
+                $cita->setDatosOtroReserva(null);
+            }
+        }
 
         return $this;
     }

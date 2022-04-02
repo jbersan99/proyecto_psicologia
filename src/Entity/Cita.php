@@ -42,6 +42,28 @@ class Cita
      */
     private $tipo_terapia;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $personal_u_otro;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="citas")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $usuario_reserva;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TipoTerapia::class, inversedBy="citas")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tipoTerapia_reserva;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=DatosOtra::class, inversedBy="citas")
+     */
+    private $datos_otro_reserva;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +125,54 @@ class Cita
     public function setTipoTerapia(string $tipo_terapia): self
     {
         $this->tipo_terapia = $tipo_terapia;
+
+        return $this;
+    }
+
+    public function getPersonalUOtro(): ?bool
+    {
+        return $this->personal_u_otro;
+    }
+
+    public function setPersonalUOtro(bool $personal_u_otro): self
+    {
+        $this->personal_u_otro = $personal_u_otro;
+
+        return $this;
+    }
+
+    public function getUsuarioReserva(): ?User
+    {
+        return $this->usuario_reserva;
+    }
+
+    public function setUsuarioReserva(?User $usuario_reserva): self
+    {
+        $this->usuario_reserva = $usuario_reserva;
+
+        return $this;
+    }
+
+    public function getTipoTerapiaReserva(): ?TipoTerapia
+    {
+        return $this->tipoTerapia_reserva;
+    }
+
+    public function setTipoTerapiaReserva(?TipoTerapia $tipoTerapia_reserva): self
+    {
+        $this->tipoTerapia_reserva = $tipoTerapia_reserva;
+
+        return $this;
+    }
+
+    public function getDatosOtroReserva(): ?DatosOtra
+    {
+        return $this->datos_otro_reserva;
+    }
+
+    public function setDatosOtroReserva(?DatosOtra $datos_otro_reserva): self
+    {
+        $this->datos_otro_reserva = $datos_otro_reserva;
 
         return $this;
     }

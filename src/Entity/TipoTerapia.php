@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TipoTerapiaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,22 @@ class TipoTerapia
      * @ORM\Column(type="integer")
      */
     private $ServiciosDisponibles;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Cita::class, mappedBy="tipoTerapia_reserva")
+     */
+    private $citas;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ServiciosDisponibles::class, inversedBy="tipoTerapia")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $servicio_escogido;
+
+    public function __construct()
+    {
+        $this->citas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +70,48 @@ class TipoTerapia
     public function setServiciosDisponibles(int $ServiciosDisponibles): self
     {
         $this->ServiciosDisponibles = $ServiciosDisponibles;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cita>
+     */
+    public function getCitas(): Collection
+    {
+        return $this->citas;
+    }
+
+    public function addCita(Cita $cita): self
+    {
+        if (!$this->citas->contains($cita)) {
+            $this->citas[] = $cita;
+            $cita->setTipoTerapiaReserva($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCita(Cita $cita): self
+    {
+        if ($this->citas->removeElement($cita)) {
+            // set the owning side to null (unless already changed)
+            if ($cita->getTipoTerapiaReserva() === $this) {
+                $cita->setTipoTerapiaReserva(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getServicioEscogido(): ?ServiciosDisponibles
+    {
+        return $this->servicio_escogido;
+    }
+
+    public function setServicioEscogido(?ServiciosDisponibles $servicio_escogido): self
+    {
+        $this->servicio_escogido = $servicio_escogido;
 
         return $this;
     }

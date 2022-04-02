@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Cita::class, mappedBy="usuario")
+     */
+    private $citas;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Foro::class, mappedBy="usuario_comenta")
+     */
+    private $comentarios;
+
+    public function __construct()
+    {
+        $this->citas = new ArrayCollection();
+        $this->comentarios = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,5 +140,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Cita>
+     */
+    public function getCitas(): Collection
+    {
+        return $this->citas;
+    }
+
+    public function addCita(Cita $cita): self
+    {
+        if (!$this->citas->contains($cita)) {
+            $this->citas[] = $cita;
+            $cita->setUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCita(Cita $cita): self
+    {
+        if ($this->citas->removeElement($cita)) {
+            // set the owning side to null (unless already changed)
+            if ($cita->getUsuario() === $this) {
+                $cita->setUsuario(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Foro>
+     */
+    public function getComentarios(): Collection
+    {
+        return $this->comentarios;
+    }
+
+    public function addComentario(Foro $comentario): self
+    {
+        if (!$this->comentarios->contains($comentario)) {
+            $this->comentarios[] = $comentario;
+            $comentario->setUsuarioComenta($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComentario(Foro $comentario): self
+    {
+        if ($this->comentarios->removeElement($comentario)) {
+            // set the owning side to null (unless already changed)
+            if ($comentario->getUsuarioComenta() === $this) {
+                $comentario->setUsuarioComenta(null);
+            }
+        }
+
+        return $this;
     }
 }
