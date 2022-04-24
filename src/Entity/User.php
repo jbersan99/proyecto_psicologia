@@ -6,11 +6,13 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -46,6 +48,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Foro::class, mappedBy="usuario_comenta")
      */
     private $comentarios;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $nombre;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $apellidos;
+
+    /**
+     * @ORM\Column(type="string", length=9)
+     */
+    private $dni;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $telefono;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $edad;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $localidad;
 
     public function __construct()
     {
@@ -118,6 +150,79 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): self
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getApellidos(): ?string
+    {
+        return $this->apellidos;
+    }
+
+    public function setApellidos(string $apellidos): self
+    {
+        $this->apellidos = $apellidos;
+
+        return $this;
+    }
+
+    public function getDni(): ?string
+    {
+        return $this->dni;
+    }
+
+    public function setDni(string $dni): self
+    {
+        $this->dni = $dni;
+
+        return $this;
+    }
+
+    public function getTelefono(): ?int
+    {
+        return $this->telefono;
+    }
+
+    public function setTelefono(int $telefono): self
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    public function getEdad(): ?int
+    {
+        return $this->edad;
+    }
+
+    public function setEdad(int $edad): self
+    {
+        $this->edad = $edad;
+
+        return $this;
+    }
+
+    public function getLocalidad(): ?string
+    {
+        return $this->localidad;
+    }
+
+    public function setLocalidad(string $localidad): self
+    {
+        $this->localidad = $localidad;
 
         return $this;
     }
