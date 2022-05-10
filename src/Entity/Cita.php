@@ -64,6 +64,16 @@ class Cita
      */
     private $datos_otro_reserva;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $Valoracion;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $Puntuacion;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -173,6 +183,30 @@ class Cita
     public function setDatosOtroReserva(?DatosOtra $datos_otro_reserva): self
     {
         $this->datos_otro_reserva = $datos_otro_reserva;
+
+        return $this;
+    }
+
+    public function getValoracion(): ?string
+    {
+        return $this->Valoracion;
+    }
+
+    public function setValoracion(?string $Valoracion): self
+    {
+        $this->Valoracion = $Valoracion;
+
+        return $this;
+    }
+
+    public function getPuntuacion(): ?int
+    {
+        return $this->Puntuacion;
+    }
+
+    public function setPuntuacion(?int $Puntuacion): self
+    {
+        $this->Puntuacion = $Puntuacion;
 
         return $this;
     }

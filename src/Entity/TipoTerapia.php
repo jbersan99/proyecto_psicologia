@@ -25,11 +25,6 @@ class TipoTerapia
     private $NombreTerapia;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $ServiciosDisponibles;
-
-    /**
      * @ORM\OneToMany(targetEntity=Cita::class, mappedBy="tipoTerapia_reserva")
      */
     private $citas;
@@ -58,18 +53,6 @@ class TipoTerapia
     public function setNombreTerapia(string $NombreTerapia): self
     {
         $this->NombreTerapia = $NombreTerapia;
-
-        return $this;
-    }
-
-    public function getServiciosDisponibles(): ?int
-    {
-        return $this->ServiciosDisponibles;
-    }
-
-    public function setServiciosDisponibles(int $ServiciosDisponibles): self
-    {
-        $this->ServiciosDisponibles = $ServiciosDisponibles;
 
         return $this;
     }
