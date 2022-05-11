@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\CitaRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CitaRepository::class)
+ * @ApiResource()
  */
 class Cita
 {
@@ -210,4 +212,5 @@ class Cita
 
         return $this;
     }
+
 }

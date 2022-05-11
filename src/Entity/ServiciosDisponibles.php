@@ -6,9 +6,12 @@ use App\Repository\ServiciosDisponiblesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+
 
 /**
  * @ORM\Entity(repositoryClass=ServiciosDisponiblesRepository::class)
+ * @ApiResource()
  */
 class ServiciosDisponibles
 {
@@ -114,5 +117,4 @@ class ServiciosDisponibles
 
         return $this;
     }
-
 }

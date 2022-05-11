@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ApiResource()
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -259,7 +261,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->citas->contains($cita)) {
             $this->citas[] = $cita;
-            $cita->setUsuario($this);
+            $cita->setUsuarioReserva($this);
         }
 
         return $this;
@@ -269,8 +271,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->citas->removeElement($cita)) {
             // set the owning side to null (unless already changed)
-            if ($cita->getUsuario() === $this) {
-                $cita->setUsuario(null);
+            if ($cita->getUsuarioReserva() === $this) {
+                $cita->setUsuarioReserva(null);
             }
         }
 

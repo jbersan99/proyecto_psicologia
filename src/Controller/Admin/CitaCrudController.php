@@ -42,7 +42,7 @@ class CitaCrudController extends AbstractCrudController
             NumberField::new('Puntuacion')
             ->setRequired(true),
             AssociationField::new('tipoTerapia_reserva')->setCrudController(TipoTerapiaCrudController::class),
-            AssociationField::new('usuario')->setCrudController(UserCrudController::class)
+            AssociationField::new('usuario')->setCrudController(UserCrudController::class),
 
         ];
 }
