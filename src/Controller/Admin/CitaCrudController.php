@@ -8,7 +8,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 
@@ -29,20 +28,26 @@ class CitaCrudController extends AbstractCrudController
         return [
             NumberField::new('ID')
             ->hideOnForm(),
+            AssociationField::new('usuario_reserva')->setCrudController(UserCrudController::class),
+            AssociationField::new('tipoTerapia_reserva')->setCrudController(TipoTerapiaCrudController::class),
             DateField::new('Fecha_Cita')
-            ->setRequired(true),
-            DateTimeField::new('Hora_Cita')
+            ->setRequired(true)
+            ->setFormat('dd MMMM yyyy hh:mm')
+            ->setTimezone('Europe/Madrid'),
+            NumberField::new('Turno')
             ->setRequired(true),
             NumberField::new('Precio_Cita')
             ->setRequired(true),
-            DateField::new('Creacion_Cita')
-            ->hideOnForm(),
             TextField::new('Valoracion')
-            ->setRequired(true),
+            ->setRequired(false),
             NumberField::new('Puntuacion')
-            ->setRequired(true),
-            AssociationField::new('tipoTerapia_reserva')->setCrudController(TipoTerapiaCrudController::class),
-            AssociationField::new('usuario')->setCrudController(UserCrudController::class),
+            ->setRequired(false),
+            DateField::new('Creacion_Cita')
+            ->setRequired(true)
+            ->setFormat('dd MMMM yyyy hh:mm')
+            ->setTimezone('Europe/Madrid'),
+            
+            
 
         ];
 }

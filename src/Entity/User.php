@@ -81,6 +81,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $localidad;
 
+    public function __toString(){
+        
+        return $this->nombre." ".$this->apellidos;
+    }
+
     public function __construct()
     {
         $this->citas = new ArrayCollection();

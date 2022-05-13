@@ -42,6 +42,10 @@ class ServiciosDisponibles
      */
     private $tipoTerapia;
 
+    public function __toString(){
+        return $this->NombreServicio;
+    }
+
     public function __construct()
     {
         $this->tipoTerapia = new ArrayCollection();

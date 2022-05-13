@@ -37,6 +37,10 @@ class TipoTerapia
      */
     private $servicio_escogido;
 
+    public function __toString(){
+        return $this->NombreTerapia;
+    }
+
     public function __construct()
     {
         $this->citas = new ArrayCollection();
@@ -101,3 +105,5 @@ class TipoTerapia
         return $this;
     }
 }
+
+

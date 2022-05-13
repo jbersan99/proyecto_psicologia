@@ -45,6 +45,19 @@ class CitaRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function findCitas()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT turno, fecha_cita'
+            )
+            ->getResult();
+    }
+
     // /**
     //  * @return Cita[] Returns an array of Cita objects
     //  */

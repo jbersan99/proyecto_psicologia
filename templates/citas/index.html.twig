@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CitasController!
+{% endblock %}
+
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+<script>
+    function reservar_cita(){
+    $.ajax({
+        url: 'http://127.0.0.1:8000/reservar_cita',
+        async: false,
+        dataType: 'json',
+        success: function(data){
+            console.log("hola");
+        }
+    })
+}
+
+ reservar_cita();
+</script>
+
+{% endblock %}
+
+{% block body %}
+	<div class="site-section">
+		<div class="container">
+			<div class="row">
+				<p>Seleccionar fecha inicio:
+					<input type="text" id="datepicker"></p>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<select name="Turno" id="turno">
+					
+				</select>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<p id="stop">Fecha no disponible</p>
+				<p id="next">Fecha disponible</p>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<input id="pasa" class="btn btn-primary py-3 px-5" value="Crear Reserva" onclick="location.href='/getreservas';">
+			</input>
+		</div>
+	</div>
+
+</div>{% endblock %}

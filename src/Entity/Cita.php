@@ -25,11 +25,6 @@ class Cita
     private $fecha_cita;
 
     /**
-     * @ORM\Column(type="date")
-     */
-    private $hora_cita;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $precio_cita;
@@ -40,41 +35,36 @@ class Cita
     private $creacion_cita;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $tipo_terapia;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $personal_u_otro;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="citas")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="citas_usuario")
      * @ORM\JoinColumn(nullable=false)
      */
     private $usuario_reserva;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TipoTerapia::class, inversedBy="citas")
+     * @ORM\ManyToOne(targetEntity=TipoTerapia::class, inversedBy="citas_reserva")
      * @ORM\JoinColumn(nullable=false)
      */
     private $tipoTerapia_reserva;
 
     /**
-     * @ORM\ManyToOne(targetEntity=DatosOtra::class, inversedBy="citas")
+     * @ORM\ManyToOne(targetEntity=DatosOtra::class, inversedBy="citas_otro")
      */
     private $datos_otro_reserva;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $Valoracion;
+    private $valoracion;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $Puntuacion;
+    private $puntuacion;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $turno;
 
     public function getId(): ?int
     {
@@ -89,18 +79,6 @@ class Cita
     public function setFechaCita(\DateTimeInterface $fecha_cita): self
     {
         $this->fecha_cita = $fecha_cita;
-
-        return $this;
-    }
-
-    public function getHoraCita(): ?\DateTimeInterface
-    {
-        return $this->hora_cita;
-    }
-
-    public function setHoraCita(\DateTimeInterface $hora_cita): self
-    {
-        $this->hora_cita = $hora_cita;
 
         return $this;
     }
@@ -125,30 +103,6 @@ class Cita
     public function setCreacionCita(\DateTimeInterface $creacion_cita): self
     {
         $this->creacion_cita = $creacion_cita;
-
-        return $this;
-    }
-
-    public function getTipoTerapia(): ?string
-    {
-        return $this->tipo_terapia;
-    }
-
-    public function setTipoTerapia(string $tipo_terapia): self
-    {
-        $this->tipo_terapia = $tipo_terapia;
-
-        return $this;
-    }
-
-    public function getPersonalUOtro(): ?bool
-    {
-        return $this->personal_u_otro;
-    }
-
-    public function setPersonalUOtro(bool $personal_u_otro): self
-    {
-        $this->personal_u_otro = $personal_u_otro;
 
         return $this;
     }
@@ -191,24 +145,36 @@ class Cita
 
     public function getValoracion(): ?string
     {
-        return $this->Valoracion;
+        return $this->valoracion;
     }
 
-    public function setValoracion(?string $Valoracion): self
+    public function setValoracion(?string $valoracion): self
     {
-        $this->Valoracion = $Valoracion;
+        $this->valoracion = $valoracion;
 
         return $this;
     }
 
     public function getPuntuacion(): ?int
     {
-        return $this->Puntuacion;
+        return $this->puntuacion;
     }
 
-    public function setPuntuacion(?int $Puntuacion): self
+    public function setPuntuacion(?int $puntuacion): self
     {
-        $this->Puntuacion = $Puntuacion;
+        $this->puntuacion = $puntuacion;
+
+        return $this;
+    }
+
+    public function getTurno(): ?int
+    {
+        return $this->turno;
+    }
+
+    public function setTurno(int $turno): self
+    {
+        $this->turno = $turno;
 
         return $this;
     }
