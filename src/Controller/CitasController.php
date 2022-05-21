@@ -3,11 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Cita;
+use App\Entity\ServiciosDisponibles;
+use App\Entity\TipoTerapia;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class CitasController extends AbstractController
 {
@@ -24,19 +30,20 @@ class CitasController extends AbstractController
     /**
      * @Route("/reservar_cita", name="reservar_cita")
      */
-    public function reservar_barco(EntityManagerInterface $em): Response
+    public function reservar_cita(EntityManagerInterface $em): Response
     {
         $citas[] = new Cita;
 
         $citas = $em->getRepository(Cita::class)->findAll();
+
 
         $reserva = new stdClass();
 
         foreach ($citas as $valor) {
 
             $objeto_fechas = new stdClass();
-            $objeto_fechas->id = $valor->getTurno();
-            $objeto_fechas->fecha_inicio = $valor->getFechaCita();
+            $objeto_fechas->fecha = $valor->getFechaCita();
+            $objeto_fechas->turno = $valor->getTurno();
 
             $reserva->fechas[] = $objeto_fechas;
         }
@@ -44,4 +51,85 @@ class CitasController extends AbstractController
         $fechas_reservadas = json_encode($reserva);
         return new Response($fechas_reservadas);
     }
+
+    /**
+     * @Route("/comprobar_cita/{fecha}", name="comprobar_cita")
+     */
+    public function comprobar_cita(string $fecha, ManagerRegistry $doctrine): Response
+    {
+        $citas = $doctrine->getRepository(Cita::class)->comprobarCita($fecha);
+
+        $cita = new stdClass();
+
+        foreach ($citas as $valor) {
+                $objeto_fechas = new stdClass();
+                $objeto_fechas->fecha_cita = $valor->getFechaCita();
+                $objeto_fechas->turno = $valor->getTurno();
+
+                $cita->fechas[] = $objeto_fechas;
+        }
+
+        $fechas_reservadas = json_encode($cita);
+        return new Response($fechas_reservadas);
+    }
+
+    /**                                                                                   
+     * @Route("/reservar", name="reservar")
+     */
+    public function reserva(ManagerRegistry $doctrine, Request $request): Response
+    {
+        //if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            $user = new User();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $cita = new Cita();
+
+            $fecha_cita = $request->get('fecha_cita');
+            $precio_cita = $request->get('precio_cita');
+            $tipo_terapia_reserva_id = $doctrine->getRepository(TipoTerapia::class)->find($request->get('tipo_terapia_reserva_id'));
+            $turno = $request->get('turno');
+
+            $time = new \DateTime();
+
+            $cita->setFechaCita(\DateTime::createFromFormat('Y-m-d', $fecha_cita));
+            $cita->setPrecioCita($precio_cita);
+            $cita->setCreacionCita($time);
+            $cita->setUsuarioReserva($user);
+            $cita->setTipoTerapiaReserva($tipo_terapia_reserva_id);
+            $cita->setTurno($turno);
+
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($cita);
+            $entityManager->flush();
+
+
+            $fechas_reservadas = json_encode($cita);
+            return new Response($fechas_reservadas);
+
+    }
+
+    /**
+     * @Route("/get_servicios/{id}", name="get_servicios")
+     */
+    public function get_servicios(string $id,  EntityManagerInterface $em): Response
+    {
+        $servicios = $em->getRepository(ServiciosDisponibles::class)->findAll();
+
+        $servicio = new stdClass();
+
+        foreach ($servicios as $valor) {
+            if($valor->getId() == $id){
+                $objeto_servicio = new stdClass();
+                $objeto_servicio->nombre_servicio = $valor->getNombreServicio();
+                $objeto_servicio->gabinete_consulta = $valor->getGabineteConsulta();
+                $objeto_servicio->nombre_psicologo = $valor->getNombrePsicologo();
+
+                $servicio->servicios_a[] = $objeto_servicio;
+            }
+        }
+
+        $servicios_disponibles = json_encode($servicio);
+        return new Response($servicios_disponibles);
+    }
+
+
 }

@@ -58,6 +58,22 @@ class CitaRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return Cita[]
+     */
+    public function comprobarCita($fecha): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.fecha_cita = :fecha')
+            ->setParameter('fecha', $fecha)
+            ->getQuery()
+            ->getResult()
+            ;
+
+    }
+
+    
+
     // /**
     //  * @return Cita[] Returns an array of Cita objects
     //  */
