@@ -41,12 +41,6 @@ class Cita
     private $usuario_reserva;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TipoTerapia::class, inversedBy="citas_reserva")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $tipoTerapia_reserva;
-
-    /**
      * @ORM\ManyToOne(targetEntity=DatosOtra::class, inversedBy="citas_otro")
      */
     private $datos_otro_reserva;
@@ -65,6 +59,11 @@ class Cita
      * @ORM\Column(type="integer")
      */
     private $turno;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ServiciosDisponibles::class, inversedBy="ServicioEscogido")
+     */
+    private $ServicioEscogido;
 
     public function getId(): ?int
     {
@@ -119,18 +118,6 @@ class Cita
         return $this;
     }
 
-    public function getTipoTerapiaReserva(): ?TipoTerapia
-    {
-        return $this->tipoTerapia_reserva;
-    }
-
-    public function setTipoTerapiaReserva(?TipoTerapia $tipoTerapia_reserva): self
-    {
-        $this->tipoTerapia_reserva = $tipoTerapia_reserva;
-
-        return $this;
-    }
-
     public function getDatosOtroReserva(): ?DatosOtra
     {
         return $this->datos_otro_reserva;
@@ -175,6 +162,18 @@ class Cita
     public function setTurno(int $turno): self
     {
         $this->turno = $turno;
+
+        return $this;
+    }
+
+    public function getServicioEscogido(): ?ServiciosDisponibles
+    {
+        return $this->ServicioEscogido;
+    }
+
+    public function setServicioEscogido(?ServiciosDisponibles $ServicioEscogido): self
+    {
+        $this->ServicioEscogido = $ServicioEscogido;
 
         return $this;
     }

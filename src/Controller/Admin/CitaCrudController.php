@@ -29,7 +29,7 @@ class CitaCrudController extends AbstractCrudController
             NumberField::new('ID')
             ->hideOnForm(),
             AssociationField::new('usuario_reserva')->setCrudController(UserCrudController::class),
-            AssociationField::new('tipoTerapia_reserva')->setCrudController(TipoTerapiaCrudController::class),
+            AssociationField::new('ServicioEscogido')->setCrudController(ServiciosDisponiblesCrudController::class),
             DateField::new('Fecha_Cita')
             ->setRequired(true)
             ->setFormat('dd MMMM yyyy hh:mm')

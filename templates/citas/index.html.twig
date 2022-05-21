@@ -15,18 +15,17 @@
 		var dateRange = [];
 		var bDates = [];
 		let jsonObject = {};
-		var id_tipo_terapia;
+		var nombre_servicio;
 		var new_fecha_datepicker;
 		$.ajax({
 			method: "GET",
-			url: "http://127.0.0.1:8000/api/tipo_terapias?page=1",
+			url: "http://127.0.0.1:8000/get_terapias",
 			dataType: "json",
 			data: jsonObject
 		}).done(function (data) {
 			console.log(data);
-			for (let i = 0; i < data.length; i++) {
-				$(".terapia").append($("<option class='option_terapia'>").attr('value', data[i].id).text(data[i].nombreTerapia));
-
+			for (let i = 0; i < data.terapias_a.length; i++) {
+				$(".terapia").append($("<option class='option_terapia'>").attr('value', data.terapias_a[i].id).text(data.terapias_a[i].nombre_terapia));
 			}
 			$('.terapia').removeAttr('disabled');
 
@@ -42,8 +41,9 @@
 					dataType: "json",
 					data: jsonObject
 				}).done(function (data) {
+					console.log(data);
 					for (let i = 0; i < data.servicios_a.length; i++) {
-						$(".servicio").append($("<option class='option_servicio'>").attr('value', data.servicios_a[i].id).text(data.servicios_a[i].nombre_servicio));
+						$(".servicio").append($("<option class='option_servicio'>").attr('value', data.servicios_a[i].id_servicio).text(data.servicios_a[i].nombre_servicio));
 					}
 					$('.servicio').removeAttr('disabled');
 					console.log(data.servicios_a[0].nombre_servicio);
@@ -140,9 +140,9 @@
 
 										}
 									}
-									var sel = $('<select>').appendTo($(".select_turno"));
 									$(turno_vacios).each(function () {
-										sel.append($("<option>").attr('value', this.id).text(this.puesto));
+										$(".turno").append($("<option class='option_turno'>").attr('value', this.id).text(this.puesto));
+										$('.turno').removeAttr('disabled');
 										document.getElementById("pasa").disabled = false;
 
 										var d = new Date();
@@ -155,12 +155,12 @@
 											(day < 10 ? '0' : '') + day;
 
 										$("#pasa").unbind().click(function () {
-											var turno = $('select :selected').val();
-											console.log(turno);
+											nombre_servicio = $('.servicio :selected').val();
+											turno = $('.turno :selected').val();
 											jsonObject = {
 												"fecha_cita": new_fecha_datepicker,
 												"precio_cita": 55,
-												"tipo_terapia_reserva_id": 779,
+												"servicio_escogido": nombre_servicio,
 												"turno": turno,
 											}
 											console.log(jsonObject);
@@ -170,7 +170,7 @@
 												dataType: "json",
 												data: jsonObject
 											}).done(function (data) {
-												window.location.href = '/app_index';
+												window.location.href = 'http://127.0.0.1:8000/';
 											});
 
 
@@ -221,6 +221,10 @@
 
 		<div class="container">
 			<div class="row select_turno">
+				<p class="seleccionar_turno">Escoger Turno:</p>
+				<select class="turno" aria-label="Default select example" disabled> 
+					<option clas="por_defecto"> Elija su turno </option>
+				</select>
 			</div>
 		</div>
 		

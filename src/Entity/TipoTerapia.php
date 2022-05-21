@@ -27,11 +27,6 @@ class TipoTerapia
     private $NombreTerapia;
 
     /**
-     * @ORM\OneToMany(targetEntity=Cita::class, mappedBy="tipoTerapia_reserva")
-     */
-    private $citas;
-
-    /**
      * @ORM\ManyToOne(targetEntity=ServiciosDisponibles::class, inversedBy="tipoTerapia")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -39,11 +34,6 @@ class TipoTerapia
 
     public function __toString(){
         return $this->NombreTerapia;
-    }
-
-    public function __construct()
-    {
-        $this->citas = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,36 +49,6 @@ class TipoTerapia
     public function setNombreTerapia(string $NombreTerapia): self
     {
         $this->NombreTerapia = $NombreTerapia;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Cita>
-     */
-    public function getCitas(): Collection
-    {
-        return $this->citas;
-    }
-
-    public function addCita(Cita $cita): self
-    {
-        if (!$this->citas->contains($cita)) {
-            $this->citas[] = $cita;
-            $cita->setTipoTerapiaReserva($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCita(Cita $cita): self
-    {
-        if ($this->citas->removeElement($cita)) {
-            // set the owning side to null (unless already changed)
-            if ($cita->getTipoTerapiaReserva() === $this) {
-                $cita->setTipoTerapiaReserva(null);
-            }
-        }
 
         return $this;
     }

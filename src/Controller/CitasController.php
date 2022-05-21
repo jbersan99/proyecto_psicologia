@@ -85,7 +85,11 @@ class CitasController extends AbstractController
 
             $fecha_cita = $request->get('fecha_cita');
             $precio_cita = $request->get('precio_cita');
-            $tipo_terapia_reserva_id = $doctrine->getRepository(TipoTerapia::class)->find($request->get('tipo_terapia_reserva_id'));
+
+            $servicio_seleccionado = $request->get('servicio_escogido');
+            $servicio = (int) $servicio_seleccionado;
+            $servicio = $doctrine->getRepository(ServiciosDisponibles::class)->getServicio($servicio);
+            
             $turno = $request->get('turno');
 
             $time = new \DateTime();
@@ -94,7 +98,7 @@ class CitasController extends AbstractController
             $cita->setPrecioCita($precio_cita);
             $cita->setCreacionCita($time);
             $cita->setUsuarioReserva($user);
-            $cita->setTipoTerapiaReserva($tipo_terapia_reserva_id);
+            $cita->setServicioEscogido($servicio);
             $cita->setTurno($turno);
 
             $entityManager = $doctrine->getManager();
@@ -105,6 +109,27 @@ class CitasController extends AbstractController
             $fechas_reservadas = json_encode($cita);
             return new Response($fechas_reservadas);
 
+    }
+
+    /**
+     * @Route("/get_terapias", name="get_terapias")
+     */
+    public function get_terapias(EntityManagerInterface $em): Response
+    {
+        $terapias = $em->getRepository(TipoTerapia::class)->findAll();
+
+        $terapia = new stdClass();
+
+        foreach ($terapias as $valor) {
+                $objeto_terapia = new stdClass();
+                $objeto_terapia->id = $valor->getId();
+                $objeto_terapia->nombre_terapia = $valor->getNombreTerapia();
+
+                $terapia->terapias_a[] = $objeto_terapia;
+        }
+
+        $terapias_disponibles = json_encode($terapia);
+        return new Response($terapias_disponibles);
     }
 
     /**
@@ -119,6 +144,7 @@ class CitasController extends AbstractController
         foreach ($servicios as $valor) {
             if($valor->getId() == $id){
                 $objeto_servicio = new stdClass();
+                $objeto_servicio->id_servicio = $valor->getId();
                 $objeto_servicio->nombre_servicio = $valor->getNombreServicio();
                 $objeto_servicio->gabinete_consulta = $valor->getGabineteConsulta();
                 $objeto_servicio->nombre_psicologo = $valor->getNombrePsicologo();

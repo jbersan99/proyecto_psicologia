@@ -42,6 +42,11 @@ class ServiciosDisponibles
      */
     private $tipoTerapia;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Cita::class, mappedBy="ServicioEscogido")
+     */
+    private $ServicioEscogido;
+
     public function __toString(){
         return $this->NombreServicio;
     }
@@ -49,6 +54,7 @@ class ServiciosDisponibles
     public function __construct()
     {
         $this->tipoTerapia = new ArrayCollection();
+        $this->ServicioEscogido = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,6 +122,36 @@ class ServiciosDisponibles
             // set the owning side to null (unless already changed)
             if ($tipoTerapium->getServicioEscogido() === $this) {
                 $tipoTerapium->setServicioEscogido(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cita>
+     */
+    public function getServicioEscogido(): Collection
+    {
+        return $this->ServicioEscogido;
+    }
+
+    public function addServicioEscogido(Cita $servicioEscogido): self
+    {
+        if (!$this->ServicioEscogido->contains($servicioEscogido)) {
+            $this->ServicioEscogido[] = $servicioEscogido;
+            $servicioEscogido->setServicioEscogido($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServicioEscogido(Cita $servicioEscogido): self
+    {
+        if ($this->ServicioEscogido->removeElement($servicioEscogido)) {
+            // set the owning side to null (unless already changed)
+            if ($servicioEscogido->getServicioEscogido() === $this) {
+                $servicioEscogido->setServicioEscogido(null);
             }
         }
 

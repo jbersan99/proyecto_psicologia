@@ -45,6 +45,32 @@ class ServiciosDisponiblesRepository extends ServiceEntityRepository
         }
     }
 
+    public function getServicio(int $servicio_id): ServiciosDisponibles
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.id = :servicio_id')
+            ->setParameter('servicio_id', $servicio_id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    // /**
+    //  * @return ServiciosDisponibles
+    //  */
+    // public function getServicio(int $id_servicio)
+    // {
+    //     $entityManager = $this->getEntityManager();
+
+    //     $result =  $entityManager->createQuery(
+    //         'SELECT p
+    //         FROM App\Entity\ServiciosDisponibles p
+    //         WHERE p.id > :id_servicio'
+    //     )->setParameter('id_servicio', $id_servicio);
+
+    //     // returns an array of Product objects
+    //     return $result->getResult();
+    // }
+
     // /**
     //  * @return ServiciosDisponibles[] Returns an array of ServiciosDisponibles objects
     //  */
