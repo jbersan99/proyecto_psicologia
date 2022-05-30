@@ -116,20 +116,20 @@ class CitasController extends AbstractController
      */
     public function get_terapias(EntityManagerInterface $em): Response
     {
-        $terapias = $em->getRepository(TipoTerapia::class)->findAll();
+        $terapias = $em->getRepository(TipoTerapia::class)->findTerapias();
 
         $terapia = new stdClass();
 
         foreach ($terapias as $valor) {
-                $objeto_terapia = new stdClass();
-                $objeto_terapia->id = $valor->getId();
-                $objeto_terapia->nombre_terapia = $valor->getNombreTerapia();
+                var_dump($valor);
+                // $objeto_terapia = new stdClass();
+                // $objeto_terapia->nombre_terapia = $valor->getNombreTerapia();
 
-                $terapia->terapias_a[] = $objeto_terapia;
+                // $terapia->terapias_a[] = $objeto_terapia;
         }
 
         $terapias_disponibles = json_encode($terapia);
-        return new Response($terapias_disponibles);
+        return new Response("ho");
     }
 
     /**
