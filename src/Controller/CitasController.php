@@ -6,6 +6,7 @@ use App\Entity\Cita;
 use App\Entity\ServiciosDisponibles;
 use App\Entity\TipoTerapia;
 use App\Entity\User;
+use App\Repository\TipoTerapiaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -121,40 +122,44 @@ class CitasController extends AbstractController
         $terapia = new stdClass();
 
         foreach ($terapias as $valor) {
-                var_dump($valor);
-                // $objeto_terapia = new stdClass();
-                // $objeto_terapia->nombre_terapia = $valor->getNombreTerapia();
+                $objeto_terapia = new stdClass();
+                $objeto_terapia->nombre_terapia = $valor["NombreTerapia"];
 
-                // $terapia->terapias_a[] = $objeto_terapia;
+                $terapia->terapias_a[] = $objeto_terapia;
         }
 
         $terapias_disponibles = json_encode($terapia);
-        return new Response("ho");
+        return new Response($terapias_disponibles);
     }
 
+
+    
+
     /**
-     * @Route("/get_servicios/{id}", name="get_servicios")
+     * @Route("/get_servicios/{name}", name="get_servicios")
      */
-    public function get_servicios(string $id,  EntityManagerInterface $em): Response
+    public function get_servicios(EntityManagerInterface $em,string $name): Response
     {
-        $servicios = $em->getRepository(ServiciosDisponibles::class)->findAll();
+        $servicios_id = $em->getRepository(TipoTerapia::class)->getServicios($name);
+        //$servicios = $em->getRepository(ServiciosDisponibles::class)->findBy($servicios_id);
 
-        $servicio = new stdClass();
+        // $servicio = new stdClass();
 
-        foreach ($servicios as $valor) {
-            if($valor->getId() == $id){
-                $objeto_servicio = new stdClass();
-                $objeto_servicio->id_servicio = $valor->getId();
-                $objeto_servicio->nombre_servicio = $valor->getNombreServicio();
-                $objeto_servicio->gabinete_consulta = $valor->getGabineteConsulta();
-                $objeto_servicio->nombre_psicologo = $valor->getNombrePsicologo();
+        // foreach ($servicios_id as $valor) {
+        //     var_dump($valor);
+        //     // if($valor->getId() == $id){
+        //     //     $objeto_servicio = new stdClass();
+        //     //     $objeto_servicio->id_servicio = $valor->getId();
+        //     //     $objeto_servicio->nombre_servicio = $valor->getNombreServicio();
+        //     //     $objeto_servicio->gabinete_consulta = $valor->getGabineteConsulta();
+        //     //     $objeto_servicio->nombre_psicologo = $valor->getNombrePsicologo();
 
-                $servicio->servicios_a[] = $objeto_servicio;
-            }
-        }
+        //     //     $servicio->servicios_a[] = $objeto_servicio;
+        //     // }
+        // }
 
-        $servicios_disponibles = json_encode($servicio);
-        return new Response($servicios_disponibles);
+        // $servicios_disponibles = json_encode($servicios_id);
+        return new Response($servicios_id[0]);
     }
 
 
