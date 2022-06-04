@@ -39,7 +39,6 @@
 				$('#datepicker').attr('disabled', 'disabled');
 				turno_vacios = [];
 				var turno = $('.terapia :selected').val();
-				$(".wlly").remove();
 				$.ajax({
 					method: "GET",
 					url: "http://127.0.0.1:8000/get_servicios/" + turno,
@@ -64,6 +63,7 @@
 			$('#datepicker').removeAttr('disabled');
 			$('.turno').attr('disabled', 'disabled');
 			$('.turno').empty().append('<option value="por_defecto" class="defecto">Elija su turno</option>');
+			$('#image').prepend('<img id="psicologo" src="images/default.jpg" class="img-fluid"/>')
 			$.ajax({
 				url: 'http://127.0.0.1:8000/reservar_cita',
 				async: false,
@@ -327,48 +327,52 @@
 			</nav>
 		</header>
 
-	<div class="site-section bg-light">
-		<div class="container">
-			<div class="row">
-				<p class="seleccionar_terapia">Seleccionar Tipo de Terapia:</p>
-				<select class="terapia" disabled> 
-					<option class="por_defecto"> Elija su terapia </option>
-				</select>
-			</div>
-		</div>
+	<div class="site-section mt-3 main">
+		<div class="container mb-3"> 
+				<div class="container mb-3 d-flex p-2">
+					<div class="row">
+						<p class="seleccionar_terapia">Seleccionar Tipo de Terapia:</p>
+						<select class="terapia custom-select" disabled> 
+							<option class="por_defecto"> Elija su terapia </option>
+						</select>
+					</div>
+				</div>
 
-		<div class="container">
-			<div class="row">
-				<p class="seleccionar_servicio">Escoger Servicio:</p>
-				<select class="servicio" disabled>
-					<option class="por_defecto"> Elija su servicio </option>
-				</select>
-			</div>
-		</div>
+				<div class="container mb-3 d-flex p-2">
+					<div class="row">
+						<p class="seleccionar_servicio">Escoger Servicio:</p>
+						<select class="servicio custom-select" disabled>
+							<option class="por_defecto"> Elija su servicio </option>
+						</select>
+					</div>
+				</div>
 
-		<div class="container">
-			<div class="row">
-				<p>Seleccionar fecha inicio:
-					<input type="text" id="datepicker" disabled autocomplete="off"></p>
-			</div>
-		</div>
+				<div class="container mb-3 d-flex p-2">
+					<div class="row">
+						<p>Seleccionar fecha inicio:
+							<input type="text" id="datepicker" disabled autocomplete="off" class="form-control"></p>
+					</div>
+				</div>
 
-		<div class="container">
-			<div class="row select_turno">
-				<p class="seleccionar_turno">Escoger Turno:</p>
-				<select class="turno" disabled> 
-					<option class="por_defecto"> Elija su turno </option>
-				</select>
+				<div class="container mb-3 d-flex p-2">
+					<div class="row select_turno">
+						<p class="seleccionar_turno">Escoger Turno:</p>
+						<select class="turno custom-select" disabled> 
+							<option class="por_defecto"> Elija su turno </option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="container d-flex p-2">
+					<div class="row">
+						<input id="pasa" class="btn btn-danger py-3 px-5" value="Crear Cita">
+					</div>
 			</div>
 		</div>
-		
-		<div class="container">
-			<div class="row">
-				<input id="pasa" class="btn btn-danger py-3 px-5" value="Crear Cita">
-			</div>
+		<div class="container image">
+			
+		</div>
 	</div>
-
-
 		<!-- footer Start -->
 		<footer class="footer section gray-bg">
 			<div class="container">
