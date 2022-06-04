@@ -38,16 +38,6 @@ class ServiciosDisponibles
     private $NombrePsicologo;
 
     /**
-     * @ORM\OneToMany(targetEntity=TipoTerapia::class, mappedBy="servicio_escogido")
-     */
-    private $tipoTerapia;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Cita::class, mappedBy="ServicioEscogido")
-     */
-    private $ServicioEscogido;
-
-    /**
      * @ORM\OneToMany(targetEntity=TipoTerapia::class, mappedBy="ServicioEscogido")
      */
     private $tipoTerapias;

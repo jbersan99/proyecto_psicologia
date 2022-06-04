@@ -22,7 +22,7 @@ class TipoTerapiaCrudController extends AbstractCrudController
             ->hideOnForm(),
             TextField::new('Nombre_Terapia')
             ->setRequired(true),
-            AssociationField::new('servicio_escogido')->setCrudController(ServiciosDisponiblesCrudController::class)
+            AssociationField::new('ServicioEscogido')->setCrudController(ServiciosDisponiblesCrudController::class)
 
         ];
 }
