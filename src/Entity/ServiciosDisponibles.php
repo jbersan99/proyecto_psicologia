@@ -47,11 +47,6 @@ class ServiciosDisponibles
      */
     private $ServicioEscogido;
 
-    /**
-     * @ORM\OneToMany(targetEntity=TipoTerapia::class, mappedBy="ServicioEscogido")
-     */
-    private $tipoTerapias;
-
     public function __toString(){
         return $this->NombreServicio;
     }
@@ -60,7 +55,6 @@ class ServiciosDisponibles
     {
         $this->tipoTerapia = new ArrayCollection();
         $this->ServicioEscogido = new ArrayCollection();
-        $this->tipoTerapias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,36 +152,6 @@ class ServiciosDisponibles
             // set the owning side to null (unless already changed)
             if ($servicioEscogido->getServicioEscogido() === $this) {
                 $servicioEscogido->setServicioEscogido(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, TipoTerapia>
-     */
-    public function getTipoTerapias(): Collection
-    {
-        return $this->tipoTerapias;
-    }
-
-    public function addTipoTerapia(TipoTerapia $tipoTerapia): self
-    {
-        if (!$this->tipoTerapias->contains($tipoTerapia)) {
-            $this->tipoTerapias[] = $tipoTerapia;
-            $tipoTerapia->setServicioEscogido($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTipoTerapia(TipoTerapia $tipoTerapia): self
-    {
-        if ($this->tipoTerapias->removeElement($tipoTerapia)) {
-            // set the owning side to null (unless already changed)
-            if ($tipoTerapia->getServicioEscogido() === $this) {
-                $tipoTerapia->setServicioEscogido(null);
             }
         }
 

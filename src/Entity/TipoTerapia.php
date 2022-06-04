@@ -27,9 +27,10 @@ class TipoTerapia
     private $NombreTerapia;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ServiciosDisponibles::class, inversedBy="tipoTerapias")
+     * @ORM\ManyToOne(targetEntity=ServiciosDisponibles::class, inversedBy="tipoTerapia")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $ServicioEscogido;
+    private $servicio_escogido;
 
     public function __toString(){
         return $this->NombreTerapia;
@@ -54,16 +55,15 @@ class TipoTerapia
 
     public function getServicioEscogido(): ?ServiciosDisponibles
     {
-        return $this->ServicioEscogido;
+        return $this->servicio_escogido;
     }
 
-    public function setServicioEscogido(?ServiciosDisponibles $ServicioEscogido): self
+    public function setServicioEscogido(?ServiciosDisponibles $servicio_escogido): self
     {
-        $this->ServicioEscogido = $ServicioEscogido;
+        $this->servicio_escogido = $servicio_escogido;
 
         return $this;
     }
-
 }
 
 

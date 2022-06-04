@@ -63,11 +63,11 @@ class CitasController extends AbstractController
         $cita = new stdClass();
 
         foreach ($citas as $valor) {
-            $objeto_fechas = new stdClass();
-            $objeto_fechas->fecha_cita = $valor->getFechaCita();
-            $objeto_fechas->turno = $valor->getTurno();
+                $objeto_fechas = new stdClass();
+                $objeto_fechas->fecha_cita = $valor->getFechaCita();
+                $objeto_fechas->turno = $valor->getTurno();
 
-            $cita->fechas[] = $objeto_fechas;
+                $cita->fechas[] = $objeto_fechas;
         }
 
         $fechas_reservadas = json_encode($cita);
@@ -80,35 +80,36 @@ class CitasController extends AbstractController
     public function reserva(ManagerRegistry $doctrine, Request $request): Response
     {
         //if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
-        $user = new User();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $cita = new Cita();
+            $user = new User();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $cita = new Cita();
 
-        $fecha_cita = $request->get('fecha_cita');
-        $precio_cita = $request->get('precio_cita');
+            $fecha_cita = $request->get('fecha_cita');
+            $precio_cita = $request->get('precio_cita');
 
-        $servicio_seleccionado = $request->get('servicio_escogido');
-        $servicio = (int) $servicio_seleccionado;
-        $servicio = $doctrine->getRepository(ServiciosDisponibles::class)->getServicio($servicio);
+            $servicio_seleccionado = $request->get('servicio_escogido');
+            $servicio = (int) $servicio_seleccionado;
+            $servicio = $doctrine->getRepository(ServiciosDisponibles::class)->getServicio($servicio);
+            
+            $turno = $request->get('turno');
 
-        $turno = $request->get('turno');
+            $time = new \DateTime();
 
-        $time = new \DateTime();
+            $cita->setFechaCita(\DateTime::createFromFormat('Y-m-d', $fecha_cita));
+            $cita->setPrecioCita($precio_cita);
+            $cita->setCreacionCita($time);
+            $cita->setUsuarioReserva($user);
+            $cita->setServicioEscogido($servicio);
+            $cita->setTurno($turno);
 
-        $cita->setFechaCita(\DateTime::createFromFormat('Y-m-d', $fecha_cita));
-        $cita->setPrecioCita($precio_cita);
-        $cita->setCreacionCita($time);
-        $cita->setUsuarioReserva($user);
-        $cita->setServicioEscogido($servicio);
-        $cita->setTurno($turno);
-
-        $entityManager = $doctrine->getManager();
-        $entityManager->persist($cita);
-        $entityManager->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($cita);
+            $entityManager->flush();
 
 
-        $fechas_reservadas = json_encode($cita);
-        return new Response($fechas_reservadas);
+            $fechas_reservadas = json_encode($cita);
+            return new Response($fechas_reservadas);
+
     }
 
     /**
@@ -121,36 +122,45 @@ class CitasController extends AbstractController
         $terapia = new stdClass();
 
         foreach ($terapias as $valor) {
-            $objeto_terapia = new stdClass();
-            $objeto_terapia->nombre_terapia = $valor["NombreTerapia"];
+                $objeto_terapia = new stdClass();
+                $objeto_terapia->nombre_terapia = $valor["NombreTerapia"];
 
-            $terapia->terapias_a[] = $objeto_terapia;
+                $terapia->terapias_a[] = $objeto_terapia;
         }
 
         $terapias_disponibles = json_encode($terapia);
         return new Response($terapias_disponibles);
     }
 
+
+    
+
     /**
      * @Route("/get_servicios/{name}", name="get_servicios")
      */
-    public function get_servicios(string $name,  EntityManagerInterface $em): Response
+    public function get_servicios(EntityManagerInterface $em,string $name): Response
     {
-        $servicios_id = $em->getRepository(TipoTerapia::class)->findServiciosbyName($name);
-        $servicio = new stdClass();
+        $servicios_id = $em->getRepository(TipoTerapia::class)->getServicios($name);
+        //$servicios = $em->getRepository(ServiciosDisponibles::class)->findBy($servicios_id);
 
-        foreach ($servicios_id as $valor) {
-            $objeto_servicio = new stdClass();
-            $objeto_servicio->id_servicio = $valor->getServicioEscogido()->getId();
-            $objeto_servicio->nombre_servicio = $valor->getServicioEscogido()->getNombreServicio();
-            $objeto_servicio->gabinete_consulta = $valor->getServicioEscogido()->getGabineteConsulta();
-            $objeto_servicio->nombre_psicologo = $valor->getServicioEscogido()->getNombrePsicologo();
+        // $servicio = new stdClass();
 
-            $servicio->servicios_a[] = $objeto_servicio;
-        }
+        // foreach ($servicios_id as $valor) {
+        //     var_dump($valor);
+        //     // if($valor->getId() == $id){
+        //     //     $objeto_servicio = new stdClass();
+        //     //     $objeto_servicio->id_servicio = $valor->getId();
+        //     //     $objeto_servicio->nombre_servicio = $valor->getNombreServicio();
+        //     //     $objeto_servicio->gabinete_consulta = $valor->getGabineteConsulta();
+        //     //     $objeto_servicio->nombre_psicologo = $valor->getNombrePsicologo();
 
-        $servicios_disponibles = json_encode($servicio);
+        //     //     $servicio->servicios_a[] = $objeto_servicio;
+        //     // }
+        // }
 
-        return new Response($servicios_disponibles);
+        // $servicios_disponibles = json_encode($servicios_id);
+        return new Response($servicios_id[0]);
     }
+
+
 }

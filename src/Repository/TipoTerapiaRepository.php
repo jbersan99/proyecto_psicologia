@@ -72,6 +72,24 @@ class TipoTerapiaRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return TipoTerapia[]
+     */
+    public function getServicios($name): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.ServicioEscogido')
+            ->andWhere('r.NombreTerapia = :val')
+            ->setParameter('val', $name)
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+
+    }
+
+
+
     // /**
     //  * @return TipoTerapia[] Returns an array of TipoTerapia objects
     //  */
