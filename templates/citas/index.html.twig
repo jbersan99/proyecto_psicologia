@@ -18,6 +18,7 @@
 		var nombre_servicio;
 		var new_fecha_datepicker;
 		var turno_vacios = [];
+		var nombre_psicologo;
 		$.ajax({
 			method: "GET",
 			url: "http://127.0.0.1:8000/get_terapias",
@@ -47,7 +48,7 @@
 				}).done(function (data) {
 					//console.log(data);
 					for (let i = 0; i < data.servicios_a.length; i++) {
-						$(".servicio").append($("<option class='option_servicio'>").attr('value', data.servicios_a[i].id_servicio).text(data.servicios_a[i].nombre_servicio));
+						$(".servicio").append($("<option class='option_servicio'>").attr('value', data.servicios_a[i].id_servicio).text(data.servicios_a[i].nombre_servicio + ' - ' + data.servicios_a[i].nombre_psicologo + ' - ' + data.servicios_a[i].gabinete_consulta));
 					}
 					$('.servicio').removeAttr('disabled');
 					//console.log(data.servicios_a[0].nombre_servicio);
@@ -58,12 +59,22 @@
 
 
 		$(".servicio").change(function () {
+			$(".image").empty();
+			nombre_psicologo = $('.servicio :selected').text();
+			nombre_psicologo_text = nombre_psicologo.split(' - ');
 			$('#datepicker').datepicker('setDate', null);
 			$('#datepicker').datepicker('destroy');
-			$('#datepicker').removeAttr('disabled');
+			$('#datepicker').attr('disabled', 'disabled');
 			$('.turno').attr('disabled', 'disabled');
 			$('.turno').empty().append('<option value="por_defecto" class="defecto">Elija su turno</option>');
-			$('#image').prepend('<img id="psicologo" src="images/default.jpg" class="img-fluid"/>')
+			var servicio_ = $('.servicio :selected').text();
+			if(servicio_ != 'Elija su servicio'){
+				$('#datepicker').removeAttr('disabled');
+				$('.image').prepend('<img id="psicologo" src="images/default.jpg" class="img-fluid"/>');
+				$('.image').prepend('<h2 id="psicologo_name" class="">'+ nombre_psicologo_text[1] +'</h2>');
+				$('.image').prepend('<g3 id="gabinete" class="">'+ nombre_psicologo_text[2] +'</h3>');
+			}
+			
 			$.ajax({
 				url: 'http://127.0.0.1:8000/reservar_cita',
 				async: false,
@@ -86,6 +97,29 @@
 					$("#datepicker").datepicker({
 						dateFormat: 'dd/mm/yy',
 						minDate: 0, //restrict user to choose previous date
+						beforeShowDay: $.datepicker.noWeekends,
+					});
+
+					$.datepicker.regional['es'] = {
+						closeText: 'Cerrar',
+						prevText: '< Ant',
+						nextText: 'Sig >',
+						currentText: 'Hoy',
+						monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+						monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+						dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+						dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+						dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+						weekHeader: 'Sm',
+						dateFormat: 'dd/mm/yy',
+						firstDay: 1,
+						isRTL: false,
+						showMonthAfterYear: false,
+						yearSuffix: ''
+						};
+						$.datepicker.setDefaults($.datepicker.regional['es']);
+						$(function () {
+						$("#fecha").datepicker();
 					});
 
 					$("#datepicker").change(function () {
@@ -100,7 +134,7 @@
 							async: false,
 							success: function (data) {
 								fechas = JSON.parse(data)["fechas"];
-								turno_vacios = [{ id: 1, puesto: 'primero' }, { id: 2, puesto: 'segundo' }, { id: 3, puesto: 'tercero' }, { id: 4, puesto: 'cuarto' }, { id: 5, puesto: 'quinto' }];
+								turno_vacios = [{ id: 1, puesto: '9:00 - 10:00' }, { id: 2, puesto: '10:00 - 11:00' }, { id: 3, puesto: '11:00 - 12:00' }, { id: 4, puesto: '12:00 - 13:00' }, { id: 5, puesto: '13:00 - 14:00' }];
 								var indexOfObject;
 								if (fechas != undefined) {
 									for (let i = 0; i < fechas.length; i++) {
@@ -327,13 +361,13 @@
 			</nav>
 		</header>
 
-	<div class="site-section mt-3 main">
+	<div class="site-section m-5 main d-flex justify-content-center">
 		<div class="container mb-3"> 
 				<div class="container mb-3 d-flex p-2">
 					<div class="row">
 						<p class="seleccionar_terapia">Seleccionar Tipo de Terapia:</p>
 						<select class="terapia custom-select" disabled> 
-							<option class="por_defecto"> Elija su terapia </option>
+							<option class="por_defecto">Elija su terapia</option>
 						</select>
 					</div>
 				</div>
@@ -342,7 +376,7 @@
 					<div class="row">
 						<p class="seleccionar_servicio">Escoger Servicio:</p>
 						<select class="servicio custom-select" disabled>
-							<option class="por_defecto"> Elija su servicio </option>
+							<option class="por_defecto">Elija su servicio</option>
 						</select>
 					</div>
 				</div>
@@ -358,7 +392,7 @@
 					<div class="row select_turno">
 						<p class="seleccionar_turno">Escoger Turno:</p>
 						<select class="turno custom-select" disabled> 
-							<option class="por_defecto"> Elija su turno </option>
+							<option class="por_defecto">Elija su turno</option>
 						</select>
 					</div>
 				</div>

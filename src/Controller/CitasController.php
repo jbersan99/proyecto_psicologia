@@ -110,47 +110,4 @@ class CitasController extends AbstractController
         $fechas_reservadas = json_encode($cita);
         return new Response($fechas_reservadas);
     }
-
-    /**
-     * @Route("/get_terapias", name="get_terapias")
-     */
-    public function get_terapias(EntityManagerInterface $em): Response
-    {
-        $terapias = $em->getRepository(TipoTerapia::class)->findTerapias();
-
-        $terapia = new stdClass();
-
-        foreach ($terapias as $valor) {
-            $objeto_terapia = new stdClass();
-            $objeto_terapia->nombre_terapia = $valor["NombreTerapia"];
-
-            $terapia->terapias_a[] = $objeto_terapia;
-        }
-
-        $terapias_disponibles = json_encode($terapia);
-        return new Response($terapias_disponibles);
-    }
-
-    /**
-     * @Route("/get_servicios/{name}", name="get_servicios")
-     */
-    public function get_servicios(string $name,  EntityManagerInterface $em): Response
-    {
-        $servicios_id = $em->getRepository(TipoTerapia::class)->findServiciosbyName($name);
-        $servicio = new stdClass();
-
-        foreach ($servicios_id as $valor) {
-            $objeto_servicio = new stdClass();
-            $objeto_servicio->id_servicio = $valor->getServicioEscogido()->getId();
-            $objeto_servicio->nombre_servicio = $valor->getServicioEscogido()->getNombreServicio();
-            $objeto_servicio->gabinete_consulta = $valor->getServicioEscogido()->getGabineteConsulta();
-            $objeto_servicio->nombre_psicologo = $valor->getServicioEscogido()->getNombrePsicologo();
-
-            $servicio->servicios_a[] = $objeto_servicio;
-        }
-
-        $servicios_disponibles = json_encode($servicio);
-
-        return new Response($servicios_disponibles);
-    }
 }
