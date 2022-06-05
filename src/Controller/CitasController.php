@@ -29,6 +29,34 @@ class CitasController extends AbstractController
     }
 
     /**
+     * @Route("/menu_citas", name="menu_citas")
+     */
+    public function menu_citas(): Response
+    {
+        return $this->render('citas/menu.html.twig', [
+            'controller_name' => 'CitasController',
+        ]);
+    }
+
+    /**
+     * @Route("/consultar", name="consultar_citas")
+     */
+    public function consultar_citas(ManagerRegistry $doctrine): Response
+    {
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $citas = $doctrine->getRepository(Cita::class)->getCitas(['usuario_reserva_id' => $user->getId()]);
+
+            return $this->render('citas/consulta.html.twig', array(
+                'citas' => $citas,
+            ));
+        } else {
+            return $this->redirectToRoute('index');
+        }
+        
+    }
+
+    /**
      * @Route("/reservar_cita", name="reservar_cita")
      */
     public function reservar_cita(EntityManagerInterface $em): Response

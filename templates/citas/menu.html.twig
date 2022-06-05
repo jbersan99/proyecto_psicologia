@@ -1,26 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register
+{% block title %}Hello CitasController!
 {% endblock %}
 
-{% block stylesheets %}
-            <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"/>
+{% block javascript %}
 
-			<!-- bootstrap.min css -->
-			<link
-			rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
-			<!-- Icon Font Css -->
-			<link
-			rel="stylesheet" href="plugins/icofont/icofont.min.css">
-			<!-- Slick Slider  CSS -->
-			<link rel="stylesheet" href="plugins/slick-carousel/slick/slick.css">
-			<link
-			rel="stylesheet" href="plugins/slick-carousel/slick/slick-theme.css">
-
-			<!-- Main Stylesheet -->
-			<link rel="stylesheet" href="css/style.css">
-			<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-            <link rel="stylesheet" href="css/style_register.css">
 {% endblock %}
 
 {% block body %}
@@ -106,41 +90,24 @@
 				</div>
 			</nav>
 		</header>
-        
-        <div class="ml-5 main d-flex flex-row justify-content-around">
-            <div class="ml-5 main d-flex flex-column">
-                <div class="title"> 
-                    <h1>Register</h1>
-                </div>
-            
-                <div class="form">
-                    {{ form_start(registrationForm) }}
-                    {{ form_row(registrationForm.nombre) }}
-                    {{ form_row(registrationForm.apellidos) }}
-                    {{ form_row(registrationForm.email) }}
-                    {{ form_row(registrationForm.dni) }}
-                    {{ form_row(registrationForm.telefono) }}
-                    {{ form_row(registrationForm.edad) }}
-                    {{ form_row(registrationForm.localidad) }}
-                    {{ form_row(registrationForm.plainPassword, {
-                        label: 'Password'
-                    }) }}
-                    {{ form_row(registrationForm.agreeTerms) }}
 
-                    <button type="submit" class="btn btn-danger py-3 px-5 m-3">Register</button>
-                    {{ form_end(registrationForm) }}
-                </div>
-                
+    <div>
+
+        <h2 class="text-center"> Seleccione si desea reservar una cita o consultar sus reservas </h2>
+
+        <div class="d-flex justify-content-center mt-5">
+            <div>
+                <a class="btn btn-danger py-3 px-5 m-3 button" value="Reservar una cita" style="color: white;" href="{{ path('app_citas')}}"> Reservar una cita </a>
             </div>
 
-            <div class="mr-5 main d-flex flex-column">
-
-                <img src="images/register.png" alt="" class="img-fluid">
-
+            <div>
+                <a class="btn btn-danger py-3 px-5 m-3" value="Consultar citas" style="color: white;" href="{{ path('consultar_citas')}}"> Consultar citas </a>
             </div>
-        </div>  
+         
+        </div>
+    </div>
 
-
+	</div>
 		<!-- footer Start -->
 		<footer class="footer section gray-bg">
 			<div class="container">
@@ -284,9 +251,7 @@
 		</footer>
 	</body>
 
-	
-{% endblock %}
 
-{% block javascripts %}
+	
 
 {% endblock %}

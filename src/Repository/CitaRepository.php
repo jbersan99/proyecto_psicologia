@@ -72,7 +72,20 @@ class CitaRepository extends ServiceEntityRepository
 
     }
     
+/**
+     * @return Cita[]
+     */
+    public function getCitas($id_user): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.usuario_reserva = :val')
+            ->setParameter('val', $id_user)
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
 
+    }
     
 
     // /**
