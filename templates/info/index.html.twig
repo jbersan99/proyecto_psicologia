@@ -69,7 +69,7 @@
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="dropdown02">
 									<li>
-										<a class="dropdown-item" href="{{ path('show_terapias')}}">Terapias</a>
+										<a class="dropdown-item" href="{{ path('info')}}">Sobre nosotros</a>
 									</li>
 									<li>
 										<a class="dropdown-item" href="{{ path('show_servicios')}}">Servicios Disponibles</a>
@@ -93,6 +93,18 @@
 							<li class="nav-item">
 								<a class="nav-link" href="contact.html">Contacto</a>
 							</li>
+                            {% if is_granted('ROLE_USER') %}
+									<li>
+										<a href="{{ path('app_logout')}}" class="nav-link text-left">Cerrar Sesión</a>
+									</li>
+									{% else %}
+									<li>
+										<a href="{{ path('login')}}" class="nav-link text-left">Inicio de Sesión</a>
+									</li>
+									<li>
+										<a href="{{ path('app_register')}}" class="nav-link text-left">Registro</a>
+									</li>
+							{% endif %}
 						</ul>
 					</div>
 				</div>
@@ -102,49 +114,8 @@
 
 		<div class="site-section bg-light">
 			<div class="container">
-				<div class="row justify-content-center mb-5">
-					<div class="col-md-7 text-center mt-5">
-						<h2 class="text-black">Listado</h2>
-						<h3 class="text-danger text-center">Citas</h3>
-					</div>
-				</div>
-                <div class="row">
-				{% if (citas != null) %}
-					{% for cita in citas %}
-						<div class="col-md-6 col-lg-4 mb-4">
-							<div class="service-39381">
-								{# {% set imagePath = 'images/psico.png' %} #}
-								{# <img id="previewHolder" width="65%" height="65%" src="{{ asset( imagePath ) }}"  alt="Image" class="img-fluid"/> #}
-								<div class="p-4">
-									<h3>
-										Cita Reservada:
-									</h3>
-									Servicio escogido -> {{ cita.getServicioEscogido }} <br>
-									Fecha de la cita -> {{ cita.getFechaCita |date('d-m-Y') }} <br>
-									Precio de la cita -> {{ cita.getPrecioCita }} € <br>
-									{% if cita.getTurno == 1 %}
-										Hora de la cita -> 9:00 a 10:00 <br>
-									{% elseif cita.getTurno == 2 %}
-										Hora de la cita -> 10:00 a 11:00 <br>
-									{% elseif cita.getTurno == 3 %}
-										Hora de la cita -> 11:00 a 12:00 <br>
-									{% elseif cita.getTurno == 4 %}
-										Hora de la cita -> 12:00 a 13:00 <br>
-									{% elseif cita.getTurno == 5 %}
-										Hora de la cita -> 13:00 a 14:00 <br>
-									{% endif %}
-									
-								</div>
-							</div>
-							<a href="{{ path('eliminar_cita', {'id': cita.id}) }}" class="btn btn-danger d-flex ">Eliminar Reserva</a>
-						</div>
-							
-                {% endfor %}
-				
-				{% else %}
-						<h2 class="text-black"> No existen citas </h2>
-				{% endif %}
-				</div>	
+			
+			</div>	
 		</div>
 
 

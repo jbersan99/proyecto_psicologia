@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %}
 
 {% block title %}Consultoría Psicologíca
 {% endblock %}
@@ -48,16 +48,31 @@
 							<li class="nav-item active">
 								<a class="nav-link" href="{{ path('app_index')}}">Inicio</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('app_citas')}}">Reservas</a>
-							</li>
+							{% if is_granted('ROLE_USER') %}
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reservas
+										<i class="icofont-thin-down"></i>
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="dropdown02">
+										<li>
+											<a class="dropdown-item" href="{{ path('app_citas')}}">Realizar Reserva</a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="{{ path('consultar_citas')}}">Consultar Reserva</a>
+										</li>
+									</ul>
+								</li>
+							{% endif %}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información
 									<i class="icofont-thin-down"></i>
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="dropdown02">
 									<li>
-										<a class="dropdown-item" href="{{ path('show_terapias')}}">Terapias</a>
+										<a class="dropdown-item" href="{{ path('info')}}">Sobre nosotros</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{ path('show_terapias')}}">Terapias Disponibles</a>
 									</li>
 									<li>
 										<a class="dropdown-item" href="{{ path('show_servicios')}}">Servicios Disponibles</a>
@@ -91,22 +106,25 @@
 		<div class="site-section bg-light">
 			<div class="container">
 				<div class="row justify-content-center mb-5">
-					<div class="col-md-7 text-center">
+					<div class="col-md-7 text-center mt-3">
 						<h2 class="text-black">Listado</h2>
 						<h3 class="text-danger text-center">Terapias</h3>
 					</div>
 				</div>
                 <div class="row">
 					{% for terapia in terapias %}
-					<div class="col-md-6 col-lg-4 mb-4">
-						<div class="service-39381">
-							{% set imagePath = 'images/psico.png' %}
-							<img id="previewHolder" width="65%" height="65%" src="{{ asset( imagePath ) }}"  alt="Image" class="img-fluid"/>
-							<div class="p-4">
+					<div class="col-md-6 col-lg-4 mb-3">
+						<div class="d-flex flex-column justify-content-center">
+							{% set imagePath = 'images/a.png' %}
+							<img id="previewHolder" width="45%" height="65%" src="{{ asset( imagePath ) }}"  alt="Image" class="m-0"/>
+							<div class="p-4 text-center">
 								<h3>
-									<i class="fa-solid fa-ship"></i>
-									{{ terapia.NombreTerapia }} &mdash; {{ terapia.getServicioEscogido }}</a>
+									{{ terapia.NombreTerapia }} 
 								</h3>
+								<p>
+									<h4> Servicios ->   {{ servicio.GabineteConsulta }} </h4> 
+									<h4> Psicologo -> {{ servicio.NombrePsicologo }}</h4>   
+								</p>
 							</div>
 						</div>
 					</div>
@@ -260,3 +278,4 @@
 	</body>
 {% endblock %}
 
+ #}

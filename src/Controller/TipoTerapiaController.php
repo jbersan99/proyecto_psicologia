@@ -15,14 +15,14 @@ class TipoTerapiaController extends AbstractController
     /**
      * @Route("/show_terapias", name="show_terapias")
      */
-    public function mostrar_terapias(ManagerRegistry $doctrine): Response
+    /* public function mostrar_terapias(ManagerRegistry $doctrine): Response
     {
         $terapias = $doctrine->getRepository(TipoTerapia::class)->findAll();
 
         return $this->render('tipo_terapia/index.html.twig', array(
             'terapias' => $terapias,
         ));
-    }
+    } */
 
     /**
      * @Route("/get_terapias", name="get_terapias")

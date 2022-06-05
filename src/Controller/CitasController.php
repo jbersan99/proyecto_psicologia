@@ -53,7 +53,6 @@ class CitasController extends AbstractController
         } else {
             return $this->redirectToRoute('index');
         }
-        
     }
 
     /**
@@ -61,24 +60,28 @@ class CitasController extends AbstractController
      */
     public function reservar_cita(EntityManagerInterface $em): Response
     {
-        $citas[] = new Cita;
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            $citas[] = new Cita;
 
-        $citas = $em->getRepository(Cita::class)->findAll();
+            $citas = $em->getRepository(Cita::class)->findAll();
 
 
-        $reserva = new stdClass();
+            $reserva = new stdClass();
 
-        foreach ($citas as $valor) {
+            foreach ($citas as $valor) {
 
-            $objeto_fechas = new stdClass();
-            $objeto_fechas->fecha = $valor->getFechaCita();
-            $objeto_fechas->turno = $valor->getTurno();
+                $objeto_fechas = new stdClass();
+                $objeto_fechas->fecha = $valor->getFechaCita();
+                $objeto_fechas->turno = $valor->getTurno();
 
-            $reserva->fechas[] = $objeto_fechas;
+                $reserva->fechas[] = $objeto_fechas;
+            }
+
+            $fechas_reservadas = json_encode($reserva);
+            return new Response($fechas_reservadas);
+        }else{
+            return new Response("No tienes permisos para entrar aqui");
         }
-
-        $fechas_reservadas = json_encode($reserva);
-        return new Response($fechas_reservadas);
     }
 
     /**
@@ -86,20 +89,24 @@ class CitasController extends AbstractController
      */
     public function comprobar_cita(string $fecha, ManagerRegistry $doctrine): Response
     {
-        $citas = $doctrine->getRepository(Cita::class)->comprobarCita($fecha);
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            $citas = $doctrine->getRepository(Cita::class)->comprobarCita($fecha);
 
-        $cita = new stdClass();
+            $cita = new stdClass();
 
-        foreach ($citas as $valor) {
-            $objeto_fechas = new stdClass();
-            $objeto_fechas->fecha_cita = $valor->getFechaCita();
-            $objeto_fechas->turno = $valor->getTurno();
+            foreach ($citas as $valor) {
+                $objeto_fechas = new stdClass();
+                $objeto_fechas->fecha_cita = $valor->getFechaCita();
+                $objeto_fechas->turno = $valor->getTurno();
 
-            $cita->fechas[] = $objeto_fechas;
+                $cita->fechas[] = $objeto_fechas;
+            }
+
+            $fechas_reservadas = json_encode($cita);
+            return new Response($fechas_reservadas);
+        } else {
+            return new Response("No tienes permisos para entrar aqui");
         }
-
-        $fechas_reservadas = json_encode($cita);
-        return new Response($fechas_reservadas);
     }
 
     /**                                                                                   
@@ -107,35 +114,55 @@ class CitasController extends AbstractController
      */
     public function reserva(ManagerRegistry $doctrine, Request $request): Response
     {
-        //if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
-        $user = new User();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $cita = new Cita();
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            $user = new User();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $cita = new Cita();
 
-        $fecha_cita = $request->get('fecha_cita');
-        $precio_cita = $request->get('precio_cita');
+            $fecha_cita = $request->get('fecha_cita');
+            $precio_cita = $request->get('precio_cita');
 
-        $servicio_seleccionado = $request->get('servicio_escogido');
-        $servicio = (int) $servicio_seleccionado;
-        $servicio = $doctrine->getRepository(ServiciosDisponibles::class)->getServicio($servicio);
+            $servicio_seleccionado = $request->get('servicio_escogido');
+            $servicio = (int) $servicio_seleccionado;
+            $servicio = $doctrine->getRepository(ServiciosDisponibles::class)->getServicio($servicio);
 
-        $turno = $request->get('turno');
+            $turno = $request->get('turno');
 
-        $time = new \DateTime();
+            $time = new \DateTime();
 
-        $cita->setFechaCita(\DateTime::createFromFormat('Y-m-d', $fecha_cita));
-        $cita->setPrecioCita($precio_cita);
-        $cita->setCreacionCita($time);
-        $cita->setUsuarioReserva($user);
-        $cita->setServicioEscogido($servicio);
-        $cita->setTurno($turno);
+            $cita->setFechaCita(\DateTime::createFromFormat('Y-m-d', $fecha_cita));
+            $cita->setPrecioCita($precio_cita);
+            $cita->setCreacionCita($time);
+            $cita->setUsuarioReserva($user);
+            $cita->setServicioEscogido($servicio);
+            $cita->setTurno($turno);
 
-        $entityManager = $doctrine->getManager();
-        $entityManager->persist($cita);
-        $entityManager->flush();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($cita);
+            $entityManager->flush();
 
 
-        $fechas_reservadas = json_encode($cita);
-        return new Response($fechas_reservadas);
+            $fechas_reservadas = json_encode($cita);
+            return new Response($fechas_reservadas);
+        } else {
+            return $this->redirectToRoute('app_index');
+        }
+    }
+
+    /**                                                                                   
+     * @Route("/eliminar_cita/{id}", name="eliminar_cita")
+     */
+    public function deleteReserva(ManagerRegistry $doctrine, int $id): Response
+    {
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            $reserva = $doctrine->getRepository(Cita::class)->find($id);
+            $entityManager = $doctrine->getManager();
+            $entityManager->remove($reserva);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('consultar_citas');
+        } else {
+            return $this->redirectToRoute('app_index');
+        }
     }
 }

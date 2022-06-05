@@ -48,16 +48,28 @@
 							<li class="nav-item active">
 								<a class="nav-link" href="{{ path('app_index')}}">Inicio</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('app_citas')}}">Reservas</a>
-							</li>
+							{% if is_granted('ROLE_USER') %}
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reservas
+										<i class="icofont-thin-down"></i>
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="dropdown02">
+										<li>
+											<a class="dropdown-item" href="{{ path('app_citas')}}">Realizar Reserva</a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="{{ path('consultar_citas')}}">Consultar Reserva</a>
+										</li>
+									</ul>
+								</li>
+							{% endif %}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información
 									<i class="icofont-thin-down"></i>
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="dropdown02">
 									<li>
-										<a class="dropdown-item" href="{{ path('show_terapias')}}">Terapias</a>
+										<a class="dropdown-item" href="{{ path('info')}}">Sobre nosotros</a>
 									</li>
 									<li>
 										<a class="dropdown-item" href="{{ path('show_servicios')}}">Servicios Disponibles</a>
