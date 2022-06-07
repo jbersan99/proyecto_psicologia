@@ -77,22 +77,19 @@
 								</ul>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="{{ path('info')}}">Contacto</a>
-							</li>
-							<li class="nav-item">
 								<a class="nav-link" href="{{ path('app_foro')}}">Foro</a>
 							</li>
 							{% if is_granted('ROLE_USER') %}
-									<li>
-										<a href="{{ path('app_logout')}}" class="nav-link text-left">Cerrar Sesión</a>
-									</li>
-									{% else %}
-									<li>
-										<a href="{{ path('login')}}" class="nav-link text-left">Inicio de Sesión</a>
-									</li>
-									<li>
-										<a href="{{ path('app_register')}}" class="nav-link text-left">Registro</a>
-									</li>
+								<li>
+									<a href="{{ path('app_logout')}}" class="nav-link text-left">Cerrar Sesión</a>
+								</li>
+							{% else %}
+								<li>
+									<a href="{{ path('login')}}" class="nav-link text-left">Inicio de Sesión</a>
+								</li>
+								<li>
+									<a href="{{ path('app_register')}}" class="nav-link text-left">Registro</a>
+								</li>
 							{% endif %}
 						</ul>
 					</div>
