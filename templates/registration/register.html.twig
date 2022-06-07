@@ -96,24 +96,13 @@
 									</li>
 								</ul>
 							</li>
-
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Psicologos y Gabinetes
-									<i class="icofont-thin-down"></i>
-								</a>
-								<ul class="dropdown-menu" aria-labelledby="dropdown03">
-									<li>
-										<a class="dropdown-item" href="doctor.html">Psicologos</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="doctor-single.html">Gabinetes</a>
-									</li>
-								</ul>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('info')}}">Contacto</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="contact.html">Contacto</a>
+								<a class="nav-link" href="{{ path('app_foro')}}">Foro</a>
 							</li>
-                            {% if is_granted('ROLE_USER') %}
+							{% if is_granted('ROLE_USER') %}
 									<li>
 										<a href="{{ path('app_logout')}}" class="nav-link text-left">Cerrar Sesión</a>
 									</li>

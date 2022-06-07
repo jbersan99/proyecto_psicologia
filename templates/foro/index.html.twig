@@ -102,9 +102,60 @@
 
 
 		<div class="site-section bg-light">
-			<div class="container">
-			
-			</div>	
+			<div class="row">
+				{% for cita in citas %}
+					<div class="col-md-6 col-lg-4 mb-3">
+						<div class="d-flex flex-column justify-content-center">
+							<div class="p-3 text-center border m-3">
+								<h4>
+									Comentario:
+									{{ cita.Valoracion }}
+								</h4>
+								{% if cita.Puntuacion == 0 %}
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+								{% elseif cita.Puntuacion == 1 %}
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+								{% elseif cita.Puntuacion == 2 %}
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+								{% elseif cita.Puntuacion == 3 %}
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+								{% elseif cita.Puntuacion == 4 %}
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+                                    <img id="previewHolder" width="15%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+								{% elseif cita.Puntuacion == 5 %}
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+									<img id="previewHolder" width="15%" height="20%" src="{{ asset('images/star.png') }}" alt="Image" class="m-0"/>
+								{% else %}
+									<img id="previewHolder" width="10%" height="20%" src="{{ asset('images/empty_star.png') }}" alt="Image" class="m-0"/>
+								{% endif %}
+
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 
 
@@ -251,4 +302,3 @@
 		</footer>
 	</body>
 {% endblock %}
-

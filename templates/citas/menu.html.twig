@@ -3,10 +3,6 @@
 {% block title %}Hello CitasController!
 {% endblock %}
 
-{% block javascript %}
-
-{% endblock %}
-
 {% block body %}
 <body id="top">
 
@@ -52,39 +48,52 @@
 							<li class="nav-item active">
 								<a class="nav-link" href="{{ path('app_index')}}">Inicio</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ path('app_citas')}}">Reservas</a>
-							</li>
+							{% if is_granted('ROLE_USER') %}
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reservas
+										<i class="icofont-thin-down"></i>
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="dropdown02">
+										<li>
+											<a class="dropdown-item" href="{{ path('app_citas')}}">Realizar Reserva</a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="{{ path('consultar_citas')}}">Consultar Reserva</a>
+										</li>
+									</ul>
+								</li>
+							{% endif %}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información
 									<i class="icofont-thin-down"></i>
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="dropdown02">
 									<li>
-										<a class="dropdown-item" href="{{ path('show_terapias')}}">Terapias</a>
+										<a class="dropdown-item" href="{{ path('info')}}">Sobre nosotros</a>
 									</li>
 									<li>
 										<a class="dropdown-item" href="{{ path('show_servicios')}}">Servicios Disponibles</a>
 									</li>
 								</ul>
 							</li>
-
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Psicologos y Gabinetes
-									<i class="icofont-thin-down"></i>
-								</a>
-								<ul class="dropdown-menu" aria-labelledby="dropdown03">
-									<li>
-										<a class="dropdown-item" href="doctor.html">Psicologos</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="doctor-single.html">Gabinetes</a>
-									</li>
-								</ul>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('info')}}">Contacto</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="contact.html">Contacto</a>
+								<a class="nav-link" href="{{ path('app_foro')}}">Foro</a>
 							</li>
+							{% if is_granted('ROLE_USER') %}
+									<li>
+										<a href="{{ path('app_logout')}}" class="nav-link text-left">Cerrar Sesión</a>
+									</li>
+									{% else %}
+									<li>
+										<a href="{{ path('login')}}" class="nav-link text-left">Inicio de Sesión</a>
+									</li>
+									<li>
+										<a href="{{ path('app_register')}}" class="nav-link text-left">Registro</a>
+									</li>
+							{% endif %}
 						</ul>
 					</div>
 				</div>

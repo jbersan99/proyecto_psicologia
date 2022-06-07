@@ -76,22 +76,11 @@
 									</li>
 								</ul>
 							</li>
-
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="doctor.html" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Psicologos y Gabinetes
-									<i class="icofont-thin-down"></i>
-								</a>
-								<ul class="dropdown-menu" aria-labelledby="dropdown03">
-									<li>
-										<a class="dropdown-item" href="doctor.html">Psicologos</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="doctor-single.html">Gabinetes</a>
-									</li>
-								</ul>
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('info')}}">Contacto</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="contact.html">Contacto</a>
+								<a class="nav-link" href="{{ path('app_foro')}}">Foro</a>
 							</li>
 							{% if is_granted('ROLE_USER') %}
 									<li>
@@ -131,7 +120,7 @@
 									{{ servicio.NombreServicio }} 
 								</h3>
 								<p>
-									<h4> Localidad ->   {{ servicio.GabineteConsulta }} </h4> 
+									<h4> Gabinete ->   {{ servicio.GabineteConsulta }} </h4> 
 									<h4> Psicologo -> {{ servicio.NombrePsicologo }}</h4>   
 								</p>
 							</div>

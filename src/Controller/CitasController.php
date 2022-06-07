@@ -6,7 +6,7 @@ use App\Entity\Cita;
 use App\Entity\ServiciosDisponibles;
 use App\Entity\TipoTerapia;
 use App\Entity\User;
-use App\Repository\TipoTerapiaRepository;
+use App\Form\CitaFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,7 +79,7 @@ class CitasController extends AbstractController
 
             $fechas_reservadas = json_encode($reserva);
             return new Response($fechas_reservadas);
-        }else{
+        } else {
             return new Response("No tienes permisos para entrar aqui");
         }
     }
@@ -144,6 +144,54 @@ class CitasController extends AbstractController
 
             $fechas_reservadas = json_encode($cita);
             return new Response($fechas_reservadas);
+        } else {
+            return $this->redirectToRoute('app_index');
+        }
+    }
+
+    /**
+     * @Route("/valorar_cita/{id}", name="valorar_cita")
+     */
+    public function valorar(ManagerRegistry $doctrine, Request $request, int $id): Response
+    {
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            date_default_timezone_set("Europe/Madrid");
+            $reserva_actual = $doctrine->getRepository(Cita::class)->find($id);
+            $fecha_actual = date('Y-m-d');
+
+            $fecha_fin = $reserva_actual->getFechaCita();
+
+            $fecha_fin_formateada = $fecha_fin->format('Y-m-d');
+
+            if ($fecha_actual >= $fecha_fin_formateada && $reserva_actual->getValoracion() == null) {
+                $cita = new Cita();
+
+                $form = $this->createForm(CitaFormType::class, $cita);
+
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()) {
+
+                    $cita = $form->getData();
+
+                    $cita_new = $doctrine->getRepository(Cita::class)->find($id);
+
+                    $cita_new->setValoracion($cita->getValoracion());
+                    $cita_new->setPuntuacion($cita->getPuntuacion());
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($cita_new);
+                    $entityManager->flush();
+
+                    return $this->redirectToRoute('consultar_citas');
+                }
+
+                return $this->render('citas/valorar.html.twig', [
+                    'form' => $form->createView(),
+                    'id' => $id,
+                ]);
+            } else {
+                return $this->redirectToRoute('consultar_citas');
+            }
         } else {
             return $this->redirectToRoute('app_index');
         }
