@@ -117,19 +117,19 @@
 									<h3>
 										Cita Reservada:
 									</h3>
-									Servicio escogido -> {{ cita.getServicioEscogido }} <br>
-									Fecha de la cita -> {{ cita.getFechaCita |date('d-m-Y') }} <br>
-									Precio de la cita -> {{ cita.getPrecioCita }} € <br>
+									Servicio escogido | <b> {{ cita.getServicioEscogido }} </b> <br>
+									Fecha de la cita | <b> {{ cita.getFechaCita |date('d-m-Y') }} </b> <br>
+									Precio de la cita | <b> {{ cita.getPrecioCita }} € </b> <br>
 									{% if cita.getTurno == 1 %}
-										Hora de la cita -> 9:00 a 10:00 <br>
+										Hora de la cita | <b> 9:00 a 10:00 </b> <br>
 									{% elseif cita.getTurno == 2 %}
-										Hora de la cita -> 10:00 a 11:00 <br>
+										Hora de la cita | <b> 10:00 a 11:00 </b> <br>
 									{% elseif cita.getTurno == 3 %}
-										Hora de la cita -> 11:00 a 12:00 <br>
+										Hora de la cita | <b> 11:00 a 12:00 </b> <br>
 									{% elseif cita.getTurno == 4 %}
-										Hora de la cita -> 12:00 a 13:00 <br>
+										Hora de la cita | <b> 12:00 a 13:00 </b> <br>
 									{% elseif cita.getTurno == 5 %}
-										Hora de la cita -> 13:00 a 14:00 <br>
+										Hora de la cita | <b> 13:00 a 14:00 </b> <br>
 									{% endif %}
 									
 								</div>

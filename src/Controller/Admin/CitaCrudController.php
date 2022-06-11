@@ -34,6 +34,10 @@ class CitaCrudController extends AbstractCrudController
             ->setRequired(true)
             ->setFormat('dd MMMM yyyy hh:mm')
             ->setTimezone('Europe/Madrid'),
+            DateField::new('Creacion_Cita')
+            ->setRequired(true)
+            ->setFormat('dd MMMM yyyy hh:mm')
+            ->setTimezone('Europe/Madrid'),
             NumberField::new('Turno')
             ->setRequired(true),
             NumberField::new('Precio_Cita')
@@ -42,10 +46,7 @@ class CitaCrudController extends AbstractCrudController
             ->setRequired(false),
             NumberField::new('Puntuacion')
             ->setRequired(false),
-            DateField::new('Creacion_Cita')
-            ->setRequired(true)
-            ->setFormat('dd MMMM yyyy hh:mm')
-            ->setTimezone('Europe/Madrid'),
+            
             
             
 
