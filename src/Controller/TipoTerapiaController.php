@@ -13,34 +13,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class TipoTerapiaController extends AbstractController
 {
     /**
-     * @Route("/show_terapias", name="show_terapias")
-     */
-    /* public function mostrar_terapias(ManagerRegistry $doctrine): Response
-    {
-        $terapias = $doctrine->getRepository(TipoTerapia::class)->findAll();
-
-        return $this->render('tipo_terapia/index.html.twig', array(
-            'terapias' => $terapias,
-        ));
-    } */
-
-    /**
      * @Route("/get_terapias", name="get_terapias")
      */
     public function get_terapias(EntityManagerInterface $em): Response
     {
-        $terapias = $em->getRepository(TipoTerapia::class)->findTerapias();
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            $terapias = $em->getRepository(TipoTerapia::class)->findTerapias();
 
-        $terapia = new stdClass();
+            $terapia = new stdClass();
 
-        foreach ($terapias as $valor) {
-            $objeto_terapia = new stdClass();
-            $objeto_terapia->nombre_terapia = $valor["NombreTerapia"];
+            foreach ($terapias as $valor) {
+                $objeto_terapia = new stdClass();
+                $objeto_terapia->nombre_terapia = $valor["NombreTerapia"];
 
-            $terapia->terapias_a[] = $objeto_terapia;
+                $terapia->terapias_a[] = $objeto_terapia;
+            }
+
+            $terapias_disponibles = json_encode($terapia);
+            return new Response($terapias_disponibles);
+        } else {
+            return new Response("No tienes permisos para entrar aqui");
         }
-
-        $terapias_disponibles = json_encode($terapia);
-        return new Response($terapias_disponibles);
     }
 }

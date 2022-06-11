@@ -50,7 +50,7 @@
 							</li>
 							{% if is_granted('ROLE_USER') %}
 								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reservas
+									<a class="nav-link dropdown-toggle" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reservas
 										<i class="icofont-thin-down"></i>
 									</a>
 									<ul class="dropdown-menu" aria-labelledby="dropdown02">
@@ -64,7 +64,7 @@
 								</li>
 							{% endif %}
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="department.html" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información
+								<a class="nav-link dropdown-toggle" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Información
 									<i class="icofont-thin-down"></i>
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="dropdown02">
@@ -110,9 +110,15 @@
 
 							<p class="mb-4 pr-5">Reserva tu cita, busca tu servicio y concreta una cita con tu psicologo de Confianza</p>
 							<div class="btn-container ">
-								<a href="appoinment.html" target="_blank" class="btn btn-main-2 btn-icon btn-round-full">Busca tu cita!
-									<i class="icofont-simple-right ml-2  "></i>
-								</a>
+								{% if is_granted('ROLE_USER') %}
+									<a href="{{ path('app_citas')}}" class="btn btn-main-2 btn-icon btn-round-full">Busca tu cita!
+										<i class="icofont-simple-right ml-2  "></i>
+									</a>
+								{% else %}
+									<a href="{{ path('login')}}" class="btn btn-main-2 btn-icon btn-round-full">Busca tu cita!
+										<i class="icofont-simple-right ml-2  "></i>
+									</a>
+								{% endif %}
 							</div>
 						</div>
 					</div>
@@ -131,7 +137,12 @@
 								<span>Servicios a tu disposicion</span>
 								<h4 class="mb-3">Cita Online</h4>
 								<p class="mb-4">Consigue la ayuda que necesites cuando lo necesites</p>
-								<a href="appoinment.html" class="btn btn-main btn-round-full">Encuentra tu cita</a>
+								{% if is_granted('ROLE_USER') %}
+									<a href="{{ path('app_citas')}}" class="btn btn-main btn-round-full">Encuentra tu cita</a>
+								{% else %}
+									<a href="{{ path('app_citas')}}" class="btn btn-main btn-round-full">Encuentra tu cita</a>
+								{% endif %}
+
 							</div>
 
 							<div class="feature-item mb-5 mb-lg-0">
@@ -143,9 +154,6 @@
 								<ul class="w-hours list-unstyled">
 									<li class="d-flex justify-content-between">Lun - Vie :
 										<span>9:00 - 14:00</span>
-									</li>
-									<li class="d-flex justify-content-between">Sab:
-										<span>10:00 - 13:00</span>
 									</li>
 								</ul>
 							</div>
@@ -187,7 +195,7 @@
 								Proporcionamos los servicios mas idoneos para nuestros clientes
 							</p>
 
-							<a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Servicios<i class="icofont-simple-right ml-3"></i>
+							<a href="{{ path('show_servicios')}}" class="btn btn-main-2 btn-round-full btn-icon">Servicios<i class="icofont-simple-right ml-3"></i>
 							</a>
 						</div>
 					</div>
@@ -202,7 +210,9 @@
 							<div class="counter-stat">
 								<i class="icofont-doctor"></i>
 								{% set clientes = 0 %}
-								{% for usuario in usuarios %} {% set clientes = clientes + 1 %} {% endfor %}
+								{% for usuario in usuarios %}
+									{% set clientes = clientes + 1 %}
+								{% endfor %}
 								<span class="h3">{{clientes}}</span>
 								<p>Clientes Satisfechos</p>
 							</div>
@@ -211,7 +221,9 @@
 							<div class="counter-stat">
 								<i class="icofont-flag"></i>
 								{% set psicologos = 0 %}
-								{% for psicologo in psicologos_gabinetes %} {% set psicologos = psicologos + 1 %} {% endfor %}
+								{% for psicologo in psicologos_gabinetes %}
+									{% set psicologos = psicologos + 1 %}
+								{% endfor %}
 								<span class="h3">{{psicologos}}</span>
 								<p>Psicologos Activos</p>
 							</div>
@@ -221,7 +233,9 @@
 							<div class="counter-stat">
 								<i class="icofont-badge"></i>
 								{% set citas_ = 0 %}
-								{% for cita in citas %} {% set citas_ = citas_ + 1 %} {% endfor %}
+								{% for cita in citas %}
+									{% set citas_ = citas_ + 1 %}
+								{% endfor %}
 								<span class="h3">{{citas_}}</span>
 								<p>Citas Realizadas</p>
 							</div>
@@ -230,7 +244,9 @@
 							<div class="counter-stat">
 								<i class="icofont-globe"></i>
 								{% set gabinetes = 0 %}
-								{% for gabinete in psicologos_gabinetes %} {% set gabinetes = gabinetes + 1 %} {% endfor %}
+								{% for gabinete in psicologos_gabinetes %}
+									{% set gabinetes = gabinetes + 1 %}
+								{% endfor %}
 								<span class="h3">{{gabinetes}}</span>
 								<p>Gabinetes por el mundo</p>
 							</div>
@@ -352,20 +368,12 @@
 
 				<div class="footer-btm py-4 mt-5">
 					<div class="row align-items-center justify-content-between">
-						<div class="col-lg-6">
+						<div class="col-lg-12">
 							<div class="copyright">
 								&copy; Copyright Reserved to
 								<span class="text-color">Novena</span>
 								by
 								<a href="https://themefisher.com/" target="_blank">Themefisher</a>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="subscribe-form text-lg-right mt-5 mt-lg-0">
-								<form action="#" class="subscribe">
-									<input type="text" class="form-control" placeholder="Your Email address">
-									<a href="#" class="btn btn-main-2 btn-round-full">Subscribe</a>
-								</form>
 							</div>
 						</div>
 					</div>

@@ -23,9 +23,13 @@ class CitasController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('citas/index.html.twig', [
-            'controller_name' => 'CitasController',
-        ]);
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            return $this->render('citas/index.html.twig', [
+                'controller_name' => 'CitasController',
+            ]);
+        } else {
+            return $this->redirectToRoute('app_index');
+        }
     }
 
     /**
@@ -33,9 +37,13 @@ class CitasController extends AbstractController
      */
     public function menu_citas(): Response
     {
-        return $this->render('citas/menu.html.twig', [
-            'controller_name' => 'CitasController',
-        ]);
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            return $this->render('citas/menu.html.twig', [
+                'controller_name' => 'CitasController',
+            ]);
+        } else {
+            return $this->redirectToRoute('app_index');
+        }
     }
 
     /**
@@ -51,7 +59,7 @@ class CitasController extends AbstractController
                 'citas' => $citas,
             ));
         } else {
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('app_index');
         }
     }
 

@@ -30,21 +30,25 @@ class ServiciosDisponiblesController extends AbstractController
      */
     public function get_servicios(string $name,  EntityManagerInterface $em): Response
     {
-        $servicios_id = $em->getRepository(TipoTerapia::class)->findServiciosbyName($name);
-        $servicio = new stdClass();
+        if ($this->isGranted('ROLE_ADMIN') || $this->isGranted('ROLE_USER')) {
+            $servicios_id = $em->getRepository(TipoTerapia::class)->findServiciosbyName($name);
+            $servicio = new stdClass();
 
-        foreach ($servicios_id as $valor) {
-            $objeto_servicio = new stdClass();
-            $objeto_servicio->id_servicio = $valor->getServicioEscogido()->getId();
-            $objeto_servicio->nombre_servicio = $valor->getServicioEscogido()->getNombreServicio();
-            $objeto_servicio->gabinete_consulta = $valor->getServicioEscogido()->getGabineteConsulta();
-            $objeto_servicio->nombre_psicologo = $valor->getServicioEscogido()->getNombrePsicologo();
+            foreach ($servicios_id as $valor) {
+                $objeto_servicio = new stdClass();
+                $objeto_servicio->id_servicio = $valor->getServicioEscogido()->getId();
+                $objeto_servicio->nombre_servicio = $valor->getServicioEscogido()->getNombreServicio();
+                $objeto_servicio->gabinete_consulta = $valor->getServicioEscogido()->getGabineteConsulta();
+                $objeto_servicio->nombre_psicologo = $valor->getServicioEscogido()->getNombrePsicologo();
 
-            $servicio->servicios_a[] = $objeto_servicio;
+                $servicio->servicios_a[] = $objeto_servicio;
+            }
+
+            $servicios_disponibles = json_encode($servicio);
+
+            return new Response($servicios_disponibles);
+        } else {
+            return new Response("No tienes permisos para entrar aqui");
         }
-
-        $servicios_disponibles = json_encode($servicio);
-
-        return new Response($servicios_disponibles);
     }
 }
