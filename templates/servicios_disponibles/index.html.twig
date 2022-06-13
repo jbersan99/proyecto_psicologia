@@ -110,12 +110,15 @@
 					{% for servicio in servicios %}
 					<div class="col-md-6 col-lg-4 mb-3">
 						<div class="d-flex flex-column justify-content-center">
-							{% set imagePath = 'images/a.png' %}
-							<img id="previewHolder" width="45%" height="65%" src="{{ asset( imagePath ) }}"  alt="Image" class="m-0"/>
+							{% set imagePath = 'uploads/' ~ servicio.imagenes %}
+							<img id="previewHolder" style="margin-left: 37%" width="25%" height="25%" src="{{ asset( imagePath ) }}"  alt="{{ servicio.NombreServicio }} "/>
 							<div class="p-4 text-center">
 								<h3>
 									{{ servicio.NombreServicio }} 
 								</h3>
+								<p>
+									{{ servicio.Description }} 
+								</p>
 								<p>
 									<h4> Gabinete ->   {{ servicio.GabineteConsulta }} </h4> 
 									<h4> Psicologo -> {{ servicio.NombrePsicologo }}</h4>   

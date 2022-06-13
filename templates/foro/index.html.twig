@@ -104,6 +104,7 @@
 				{% for cita in citas %}
 					<div class="col-md-6 col-lg-4 mb-3">
 						<div class="d-flex flex-column justify-content-center">
+						{% if cita.Valoracion != null and cita.Puntuacion != null %}
 							<div class="p-3 text-center border m-3">
 								<h4>
 									Comentario:
@@ -150,6 +151,7 @@
 								{% endif %}
 
 							</div>
+						{% endif %}
 						</div>
 					</div>
 				{% endfor %}

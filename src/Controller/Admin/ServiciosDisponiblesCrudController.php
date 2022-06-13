@@ -6,6 +6,8 @@ use App\Entity\ServiciosDisponibles;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
 class ServiciosDisponiblesCrudController extends AbstractCrudController
 {
@@ -18,14 +20,20 @@ class ServiciosDisponiblesCrudController extends AbstractCrudController
     {
         return [
             NumberField::new('ID')
-            ->hideOnForm(),
+                ->hideOnForm(),
             TextField::new('Nombre_Servicio')
-            ->setRequired(true),
+                ->setRequired(true),
             TextField::new('Gabinete_Consulta')
-            ->setRequired(true),
+                ->setRequired(true),
             TextField::new('Nombre_Psicologo')
-            ->setRequired(true),
-
+                ->setRequired(true),
+            TextareaField::new('description')
+                ->setRequired(true),
+            ImageField::new('Imagenes')
+                ->setBasePath('uploads/')
+                ->setUploadDir('public/uploads')
+                ->setUploadedFileNamePattern('[randomhash].[extension]')
+                ->setRequired(true)
         ];
-}
+    }
 }

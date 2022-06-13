@@ -52,6 +52,16 @@ class ServiciosDisponibles
      */
     private $tipoTerapias;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $description;
+
+     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $imagenes;
+
     public function __toString(){
         return $this->NombreServicio;
     }
@@ -190,6 +200,38 @@ class ServiciosDisponibles
                 $tipoTerapia->setServicioEscogido(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImagenes(): ?string
+    {
+        return $this->imagenes;
+    }
+
+    public function setImagenes(string $imagenes): self
+    {
+        $this->imagenes = $imagenes;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of description
+     */ 
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the value of description
+     *
+     * @return  self
+     */ 
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
         return $this;
     }
